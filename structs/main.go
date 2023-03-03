@@ -1,6 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+)
 
 type Car struct {
 	Name  string
@@ -25,4 +29,10 @@ func main() {
 	fmt.Println(car1.toString())
 	fmt.Println(car2.toString())
 	fmt.Println(scar.toString())
+
+	car3 := Car{"Gol", 2017, "Yellow"}
+	result, _ := json.Marshal(car3)
+	fmt.Println(result)
+	fmt.Println(bytes.NewBuffer(result))
+	fmt.Println(string(result))
 }
