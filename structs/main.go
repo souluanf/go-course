@@ -7,8 +7,8 @@ import (
 )
 
 type Car struct {
-	Name  string
-	Year  int
+	Name  string `json:"nome"` //Como estará no arquivo json
+	Year  int    `json:"-"`    // Usado para nao trazer o valor no Json
 	Color string
 }
 
