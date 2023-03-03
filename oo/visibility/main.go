@@ -1,6 +1,6 @@
 package main
 
-import "github.com/souluanf/go-course/scope"
+import "github.com/souluanf/go-course/basico/scope"
 
 func main() {
 	scope.PrintZ()

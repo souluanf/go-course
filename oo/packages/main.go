@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/souluanf/go-course/packages/car"
+	"github.com/souluanf/go-course/oo/packages/car"
 )
 
 func main() {
