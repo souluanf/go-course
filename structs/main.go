@@ -35,4 +35,12 @@ func main() {
 	fmt.Println(result)
 	fmt.Println(bytes.NewBuffer(result))
 	fmt.Println(string(result))
+
+	var car Car
+	data := []byte(`{"nome":"Gol","Year":2017,"Color":"Yellow"}`)
+	err := json.Unmarshal(data, &car)
+	if err != nil {
+		return
+	}
+	fmt.Println(car.Name, car.Color)
 }
