@@ -1,5 +1,25 @@
 # go-course
 
-- Fundamentos
-- Orientação a Objeto
+- Fundamentals
+  - Arrays
+  - Blank Identifier
+  - For
+  - Functions
+  - If
+  - Maps
+  - Pointers
+  - Scope
+  - Slices
+  - Structs
+  - Switch
+  - Variables
+- OO
+  - Interfaces
+  - Packages
+  - Visivility
 - Go Routines
+  - Channels
+  - Concurrency
+  - Parallelism
+  - Race
+- Web
