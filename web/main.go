@@ -14,8 +14,14 @@ type Post struct {
 
 func main() {
 	http.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
-		t := template.Must(template.ParseFiles("templates/index.htm"))
-		if err := t.ExecuteTemplate(writer, "index.html", nil); err != nil {
+		post := Post{Id: 0, Title: "Unamed Post", Body: "Our contents"}
+
+		if title := request.FormValue("title"); title != "" {
+			post.Title = title
+		}
+
+		t := template.Must(template.ParseFiles("templates/index.html"))
+		if err := t.ExecuteTemplate(writer, "index.html", post); err != nil {
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
 		}
 	})
