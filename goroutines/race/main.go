@@ -30,4 +30,4 @@ func runProcess(name string, total int) {
 
 }
 
-// go run -race main.go
+// go run -race exemplo1.go
