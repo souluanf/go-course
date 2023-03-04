@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-// Fun in
+// Fan in
 func main() {
 	x := funnel(generateMessage("hello go"), generateMessage("hello world"))
 	for i := 0; i < 10; i++ {
