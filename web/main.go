@@ -35,16 +35,17 @@ func main() {
 		rows.Scan(&post.Id, &post.Title, &post.Body)
 		items = append(items, post)
 	}
+	db.Close()
 
 	http.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
-		post := Post{Id: 0, Title: "Unamed Post", Body: "Our contents"}
-
-		if title := request.FormValue("title"); title != "" {
-			post.Title = title
-		}
+		//post := Post{Id: 0, Title: "Unamed Post", Body: "Our contents"}
+		//
+		//if title := request.FormValue("title"); title != "" {
+		//	post.Title = title
+		//}
 
 		t := template.Must(template.ParseFiles("templates/index.html"))
-		if err := t.ExecuteTemplate(writer, "index.html", post); err != nil {
+		if err := t.ExecuteTemplate(writer, "index.html", items); err != nil {
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
 		}
 	})
