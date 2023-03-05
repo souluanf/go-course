@@ -23,3 +23,8 @@
   - Parallelism
   - Race
 - Web
+  - Templates
+  - Database
+  - Gorilla Mux
+  - QUeryRow
+  - Master Templates
