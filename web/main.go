@@ -5,6 +5,8 @@ import (
 	_ "database/sql"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/gorilla/mux"
+	_ "github.com/gorilla/mux"
 	"html/template"
 	"net/http"
 )
@@ -18,38 +20,28 @@ type Post struct {
 var db, _ = sql.Open("mysql", "go_course:go_course@/go_course")
 
 func main() {
+	r := mux.NewRouter()
+	r.HandleFunc("/", HomeHandler)
+	fmt.Println(http.ListenAndServe(":8080", r))
+}
 
-	//stmt, err := db.Prepare("insert into posts(title, body) values(?, ?)")
-	//checkErr(err)
-	//
-	//_, err = stmt.Exec("My first post", "This is my first post")
-	//checkErr(err)
-	//db.Close()
+func HomeHandler(w http.ResponseWriter, r *http.Request) {
+	t := template.Must(template.ParseFiles("templates/index.html"))
+	if err := t.ExecuteTemplate(w, "index.html", ListPosts()); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}
 
+func ListPosts() []Post {
 	rows, err := db.Query("select * from posts")
 	checkErr(err)
 	var items []Post
-
 	for rows.Next() {
 		post := Post{}
 		rows.Scan(&post.Id, &post.Title, &post.Body)
 		items = append(items, post)
 	}
-	db.Close()
-
-	http.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
-		//post := Post{Id: 0, Title: "Unamed Post", Body: "Our contents"}
-		//
-		//if title := request.FormValue("title"); title != "" {
-		//	post.Title = title
-		//}
-
-		t := template.Must(template.ParseFiles("templates/index.html"))
-		if err := t.ExecuteTemplate(writer, "index.html", items); err != nil {
-			http.Error(writer, err.Error(), http.StatusInternalServerError)
-		}
-	})
-	fmt.Println(http.ListenAndServe(":8080", nil))
+	return items
 }
 
 func checkErr(err error) {
