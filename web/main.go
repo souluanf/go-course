@@ -30,16 +30,17 @@ func main() {
 }
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
-	t := template.Must(template.ParseFiles("templates/index.html"))
-	if err := t.ExecuteTemplate(w, "index.html", ListPosts()); err != nil {
+	t := template.Must(template.ParseFiles("templates/layout.html", "templates/list.html"))
+	if err := t.ExecuteTemplate(w, "layout.html", ListPosts()); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
 
 func ViewHandler(w http.ResponseWriter, r *http.Request) {
 	id, _ := strconv.Atoi(mux.Vars(r)["id"])
-	t := template.Must(template.ParseFiles("templates/view.html"))
-	if err := t.ExecuteTemplate(w, "view.html", GetPostById(id)); err != nil {
+	t := template.Must(template.ParseFiles("templates/layout.html", "templates/view.html"))
+	err := t.ExecuteTemplate(w, "layout.html", GetPostById(id))
+	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
@@ -47,7 +48,10 @@ func ViewHandler(w http.ResponseWriter, r *http.Request) {
 func GetPostById(id int) Post {
 	row := db.QueryRow("select * from posts where id = ?", id)
 	post := Post{}
-	row.Scan(&post.Id, &post.Title, &post.Body)
+	err := row.Scan(&post.Id, &post.Title, &post.Body)
+	if err != nil {
+		return Post{}
+	}
 	return post
 }
 
@@ -57,7 +61,10 @@ func ListPosts() []Post {
 	var items []Post
 	for rows.Next() {
 		post := Post{}
-		rows.Scan(&post.Id, &post.Title, &post.Body)
+		err := rows.Scan(&post.Id, &post.Title, &post.Body)
+		if err != nil {
+			return nil
+		}
 		items = append(items, post)
 	}
 	return items
